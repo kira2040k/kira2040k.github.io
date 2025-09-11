@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>لعبة الثعلب والخروف والعشب</title>
+  <style>
+    :root{--bg:#f6f9ff;--bank:#e2f0d9;--boat:#8fbcd4;--card:#fff}
+    *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+    body{margin:0;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .game{width:900px;max-width:96%;background:var(--card);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden}
+    header{padding:18px 22px;border-bottom:1px solid #eef;display:flex;align-items:center;justify-content:space-between}
+    h1{margin:0;font-size:18px}
+    .controls{display:flex;gap:8px}
+    button{padding:8px 12px;border-radius:8px;border:0;background:#2b6cb0;color:#fff;cursor:pointer}
+    button.secondary{background:#4c5564}
+    main{display:flex;gap:12px;padding:18px}
+    .bank{flex:1;padding:12px;border-radius:10px;background:linear-gradient(180deg,var(--bank),#d9efc7);min-height:260px;position:relative}
+    .river{width:220px;background:linear-gradient(180deg,#bfe6ff,#8fcdf0);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px}
+    .bank h2{margin:6px 0 12px 0;text-align:center}
+    .items{display:flex;flex-direction:column;gap:10px;align-items:center}
+    .item{width:110px;background:#fff;border-radius:10px;padding:8px;display:flex;gap:8px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.06);user-select:none}
+    .boat{width:160px;height:70px;border-radius:12px;background:var(--boat);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .boat .passengers{display:flex;gap:6px}
+    .passenger{width:48px;height:48px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .status{padding:12px;border-top:1px solid #eef;background:#fbfdff}
+    .msg{min-height:24px}
+    .footer-instr{font-size:13px;color:#333;margin-top:8px}
+    .bank-label{position:absolute;top:8px;left:12px;font-weight:600}
+    .bank.right .bank-label{left:auto;right:12px}
+    footer{padding:12px 18px;text-align:center;font-size:13px;color:#555}
+    select{padding:6px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="game" role="application" aria-label="لعبة الثعلب والخروف والعشب">
+    <header>
+      <h1>لعبة الثعلب 🦊 - الخروف 🐑 - العشب 🌿</h1>
+      <div class="controls">
+        <label for="difficulty">المستوى:</label>
+        <select id="difficulty">
+          <option value="easy">سهل</option>
+          <option value="medium">متوسط</option>
+          <option value="hard">صعب</option>
+        </select>
+        <button id="moveBoat">تحريك القارب</button>
+        <button id="restart" class="secondary">إعادة ضبط</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="bank left" id="leftBank">
+        <div class="bank-label">الضفة اليمنى</div>
+        <h2>الضفة الأصلية</h2>
+        <div class="items" id="leftItems"></div>
+      </section>
+
+      <div class="river">
+        <div class="boat" id="boat" aria-label="قارب" tabindex="0">
+          <div id="boatCapacityLabel" style="font-size:12px;font-weight:600">قارب (سعة: 1)</div>
+          <div class="passengers" id="boatPassengers"></div>
+        </div>
+      </div>
+
+      <section class="bank right" id="rightBank">
+        <div class="bank-label">الضفة اليسرى</div>
+        <h2>الضفة المقصودة</h2>
+        <div class="items" id="rightItems"></div>
+      </section>
+    </main>
+
+    <div class="status">
+      <div class="msg" id="message">اختر مستوى صعوبة وابدأ اللعب.</div>
+      <div class="footer-instr">انقر على أي عنصر لتحميله / تفريغه من القارب. ثم اضغط "تحريك القارب" لنقله.</div>
+    </div>
+
+    <footer>
+      اللعبة الكلاسيكية مع مستويات: سهل = سعة القارب 2. متوسط = سعة 1 (القواعد المعتادة). صعب = سعة 1 مع عنصر إضافي 🐺.
+    </footer>
+  </div>
+
+  <script>
+    let ITEMS = [];
+    let BOAT_CAPACITY = 1;
+
+    const state = {
+      boatSide: 'left',
+      positions: {}
+    };
+
+    const leftItems = document.getElementById('leftItems');
+    const rightItems = document.getElementById('rightItems');
+    const boatPassengers = document.getElementById('boatPassengers');
+    const boatEl = document.getElementById('boat');
+    const message = document.getElementById('message');
+    const moveBtn = document.getElementById('moveBoat');
+    const restartBtn = document.getElementById('restart');
+    const difficultySelect = document.getElementById('difficulty');
+    const boatCapacityLabel = document.getElementById('boatCapacityLabel');
+
+    function setupGame(level){
+      if(level==='easy'){
+        ITEMS = [
+          {id:'fox', name:'الثعلب', emoji:'🦊'},
+          {id:'sheep', name:'الخروف', emoji:'🐑'},
+          {id:'grass', name:'العشب', emoji:'🌿'}
+        ];
+        BOAT_CAPACITY = 2;
+      } else if(level==='medium'){
+        ITEMS = [
+          {id:'fox', name:'الثعلب', emoji:'🦊'},
+          {id:'sheep', name:'الخروف', emoji:'🐑'},
+          {id:'grass', name:'العشب', emoji:'🌿'}
+        ];
+        BOAT_CAPACITY = 1;
+      } else if(level==='hard'){
+        ITEMS = [
+          {id:'fox', name:'الثعلب', emoji:'🦊'},
+          {id:'sheep', name:'الخروف', emoji:'🐑'},
+          {id:'grass', name:'العشب', emoji:'🌿'},
+          {id:'wolf', name:'الذئب', emoji:'🐺'}
+        ];
+        BOAT_CAPACITY = 1;
+      }
+
+      state.boatSide = 'left';
+      state.positions = {};
+      ITEMS.forEach(it=> state.positions[it.id] = 'left');
+      boatCapacityLabel.textContent = `قارب (سعة: ${BOAT_CAPACITY})`;
+      render();
+      showMsg('ابدأ بنقل العناصر.');
+    }
+
+    function createItemEl(item){
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.id = 'item-'+item.id;
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex','0');
+      el.innerHTML = `<span style="font-size:20px;margin-left:6px">${item.emoji}</span><span>${item.name}</span>`;
+      el.addEventListener('click',()=>toggleLoad(item.id));
+      el.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' ') toggleLoad(item.id); });
+      return el;
+    }
+
+    function render(){
+      leftItems.innerHTML=''; rightItems.innerHTML=''; boatPassengers.innerHTML='';
+      ITEMS.forEach(it=>{
+        const el = createItemEl(it);
+        const pos = state.positions[it.id];
+        if(pos === 'left') leftItems.appendChild(el);
+        else if(pos === 'right') rightItems.appendChild(el);
+        else if(pos === 'boat') {
+          const p = document.createElement('div');
+          p.className='passenger';
+          p.textContent = it.emoji;
+          p.title = it.name;
+          p.setAttribute('role','button');
+          p.addEventListener('click',()=>toggleLoad(it.id));
+          boatPassengers.appendChild(p);
+        }
+      });
+    }
+
+    function toggleLoad(id){
+      const pos = state.positions[id];
+      if(pos === 'boat'){
+        state.positions[id] = state.boatSide;
+      } else {
+        const passengers = Object.values(state.positions).filter(p=>p==='boat').length;
+        if(state.boatSide !== pos){ showMsg('لا يمكنك تحميل عنصر من الضفة الأخرى.'); return; }
+        if(passengers >= BOAT_CAPACITY){ showMsg('سعة القارب ممتلئة.'); return; }
+        state.positions[id] = 'boat';
+      }
+      render();
+      checkLoseOrWin();
+    }
+
+    function showMsg(txt){ message.textContent = txt; }
+
+    function moveBoat(){
+      state.boatSide = state.boatSide === 'left' ? 'right' : 'left';
+      Object.keys(state.positions).forEach(k=>{ if(state.positions[k] === 'boat') state.positions[k] = state.boatSide; });
+      render();
+      checkLoseOrWin();
+    }
+
+    function checkLoseOrWin(){
+      const banks = ['left','right'];
+      for(const bank of banks){
+        const present = Object.entries(state.positions).filter(([,pos])=>pos===bank).map(([k])=>k);
+        const playerHere = (state.boatSide === bank);
+
+        if(!playerHere){
+          if(present.includes('fox') && present.includes('sheep')){
+            showMsg('خسرت! الثعلب أكل الخروف على الضفة '+(bank==='left'?'الأصلية':'الأخرى'));
+            disableControls(); return;
+          }
+          if(present.includes('sheep') && present.includes('grass')){
+            showMsg('خسرت! الخروف أكل العشب على الضفة '+(bank==='left'?'الأصلية':'الأخرى'));
+            disableControls(); return;
+          }
+          if(present.includes('wolf') && present.includes('sheep')){
+            showMsg('خسرت! الذئب أكل الخروف على الضفة '+(bank==='left'?'الأصلية':'الأخرى'));
+            disableControls(); return;
+          }
+        }
+      }
+      const allRight = Object.values(state.positions).every(p=>p==='right');
+      if(allRight){ showMsg('مبروك! نجحت في المرحلة 🎉'); disableControls(); }
+      else { enableControls(); }
+    }
+
+    function disableControls(){ moveBtn.disabled = true; document.querySelectorAll('.item').forEach(el=>el.style.pointerEvents='none'); boatEl.style.pointerEvents='none'; }
+    function enableControls(){ moveBtn.disabled = false; document.querySelectorAll('.item').forEach(el=>el.style.pointerEvents='auto'); boatEl.style.pointerEvents='auto'; }
+
+    function reset(){ setupGame(difficultySelect.value); enableControls(); }
+
+    moveBtn.addEventListener('click',()=>{ moveBoat(); });
+    restartBtn.addEventListener('click',()=>{ reset(); });
+    difficultySelect.addEventListener('change',()=>{ setupGame(difficultySelect.value); });
+
+    document.addEventListener('keydown',(e)=>{ if(e.key.toLowerCase()==='m') moveBoat(); if(e.key.toLowerCase()==='r') reset(); });
+
+    // init
+    setupGame('easy');
+  </script>
+</body>
+</html>
