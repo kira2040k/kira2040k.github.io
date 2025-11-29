@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BrightLearn — Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">BrightLearn</a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <button id="nav-toggle" class="nav-toggle" aria-expanded="false">☰</button>
+        <ul id="nav-list" class="nav-list">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html">About / Services</a></li>
+          <li><a href="products.html">Courses / Offerings</a></li>
+          <li><a href="contact.html">Contact / Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <h1>Build skills. Join teams. Ship projects.</h1>
+          <p>BrightLearn connects students with practical short courses and project-based learning.</p>
+          <a class="btn primary" href="products.html">Explore Offerings</a>
+        </div>
+
+        <div class="hero-slider" aria-label="Featured images">
+          <div class="slider" id="imageSlider">
+            <img src="assets/slide1.jpg" alt="Project workshop" />
+            <img src="assets/slide2.jpg" alt="Team collaboration" />
+            <img src="assets/slide3.jpg" alt="Hands-on learning" />
+          </div>
+          <div class="slider-controls">
+            <button id="prevBtn" aria-label="Previous slide">‹</button>
+            <button id="nextBtn" aria-label="Next slide">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features container">
+      <article class="card">
+        <h2>Small Groups</h2>
+        <p>Each group consists of <strong>4 students max</strong> to ensure hands-on mentoring.</p>
+      </article>
+      <article class="card">
+        <h2>Live Projects</h2>
+        <p>Real projects that you can add to your portfolio.</p>
+      </article>
+      <article class="card">
+        <h2>Certificates</h2>
+        <p>Completion certificates and feedback reports.</p>
+      </article>
+    </section>
+
+    <section class="pricing container">
+      <h2>Course Schedule & Prices</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Duration</th>
+              <th>Start Date</th>
+              <th>Price (SAR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Web Fundamentals</td>
+              <td>4 weeks</td>
+              <td>2025-12-01</td>
+              <td>400</td>
+            </tr>
+            <tr>
+              <td>Python for Data</td>
+              <td>6 weeks</td>
+              <td>2026-01-10</td>
+              <td>550</td>
+            </tr>
+            <tr>
+              <td>Mobile Dev (Flutter)</td>
+              <td>5 weeks</td>
+              <td>2026-02-05</td>
+              <td>500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cta container">
+      <h2>Ready to join?</h2>
+      <p>Seats are limited — max 4 students per group.</p>
+      <a class="btn secondary" href="contact.html">Register Now</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>© <span id="year"></span> BrightLearn. All rights reserved.</p>
+      <p>Contact: <a href="mailto:info@brightlearn.example">info@brightlearn.example</a></p>
+    </div>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>

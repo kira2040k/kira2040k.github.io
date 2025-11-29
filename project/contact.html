@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact & Register — BrightLearn</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">BrightLearn</a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <button id="nav-toggle-4" class="nav-toggle" aria-expanded="false">☰</button>
+        <ul id="nav-list-4" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About / Services</a></li>
+          <li><a href="products.html">Courses / Offerings</a></li>
+          <li><a href="contact.html" class="active">Contact / Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container contact-page">
+    <h1>Contact & Register</h1>
+
+    <section class="forms-grid">
+      <form id="contactForm" class="form-card" novalidate>
+        <h2>Contact Us</h2>
+        <label for="cname">Full name</label>
+        <input id="cname" name="name" type="text" required minlength="3" />
+        <label for="cemail">Email</label>
+        <input id="cemail" name="email" type="email" required />
+        <label for="cmessage">Message</label>
+        <textarea id="cmessage" name="message" rows="5" required></textarea>
+        <button class="btn primary" type="submit">Send Message</button>
+        <p class="form-feedback" id="contactFeedback" aria-live="polite"></p>
+      </form>
+
+      <form id="registerForm" class="form-card" novalidate>
+        <h2>Register</h2>
+        <label for="rname">Full name</label>
+        <input id="rname" name="name" type="text" required minlength="3" />
+        <label for="remail">Email</label>
+        <input id="remail" name="email" type="email" required />
+        <label for="rcourse">Select Course</label>
+        <select id="rcourse" name="course" required>
+          <option value="">Choose...</option>
+          <option>Web Fundamentals</option>
+          <option>Python for Data</option>
+          <option>Mobile Dev (Flutter)</option>
+        </select>
+        <label for="rgroup">Group Preference</label>
+        <select id="rgroup" name="group">
+          <option value="">No preference</option>
+          <option>Morning</option>
+          <option>Evening</option>
+        </select>
+        <div class="small-note">Note: Each group has max 4 students.</div>
+        <button class="btn primary" type="submit">Submit Registration</button>
+        <p class="form-feedback" id="registerFeedback" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>© <span id="year-contact"></span> BrightLearn</p>
+      <p><a href="index.html">Home</a></p>
+    </div>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>

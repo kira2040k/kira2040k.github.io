@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Courses — BrightLearn</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">BrightLearn</a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <button id="nav-toggle-3" class="nav-toggle" aria-expanded="false">☰</button>
+        <ul id="nav-list-3" class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About / Services</a></li>
+          <li><a href="products.html" class="active">Courses / Offerings</a></li>
+          <li><a href="contact.html">Contact / Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Courses & Offerings</h1>
+
+    <section class="offerings-grid">
+      <article class="course-card">
+        <img src="assets/w.jpg" alt="Web course">
+        <h3>Web Fundamentals</h3>
+        <p>HTML, CSS, JS basics + small capstone.</p>
+        <div class="card-footer">
+          <span>Price: SAR 499</span>
+          <button class="btn small" data-course="Web Fundamentals">Reserve</button>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/p.jpg" alt="Data course">
+        <h3>Python for Data</h3>
+        <p>Pandas, visualization and mini-project.</p>
+        <div class="card-footer">
+          <span>Price: SAR 499</span>
+          <button class="btn small" data-course="Python for Data">Reserve</button>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/m.jpg" alt="Mobile course">
+        <h3>Mobile Dev (Flutter)</h3>
+        <p>Widgets, state management, and deployment.</p>
+        <div class="card-footer">
+          <span>Price: SAR 499</span>
+          <button class="btn small" data-course="Mobile Dev">Reserve</button>
+        </div>
+      </article>
+    </section>
+
+   
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>© <span id="year-products"></span> BrightLearn</p>
+      <p><a href="contact.html">Contact</a></p>
+    </div>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
